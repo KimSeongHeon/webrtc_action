@@ -95,7 +95,7 @@ jobs:
           # - ubuntu-22.04_x86_64
           - android
           - android_prefixed
-    runs-on: buildjet-4vcpu-ubuntu-2204
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Disk Cleanup
