@@ -132,6 +132,7 @@ def read_version_file(path: str) -> Dict[str, str]:
     versions = {}
 
     lines = open(path).readlines()
+    logging.debug(f'lines info : {lines}')
     for line in lines:
         line = line.strip()
 
