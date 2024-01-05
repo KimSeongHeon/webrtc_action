@@ -285,6 +285,8 @@ def get_webrtc(source_dir, patch_dir, version, target,
     if fetch:
         with cd(src_dir):
             cmd(['git', 'fetch'])
+            logging.debug(f'version info: {version}')
+
             if version == 'HEAD':
                 # Update origin/HEAD (default branch may have changed)
                 cmd(['git', 'remote', 'set-head', 'origin', '-a'])
