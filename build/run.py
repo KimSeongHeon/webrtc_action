@@ -269,6 +269,8 @@ def get_webrtc(source_dir, patch_dir, version, target,
 
     mkdir_p(webrtc_source_dir)
 
+    logging.debug(f'dir info: {source_dir} ${webrtc_source_dir} ${patch_dir}')
+
     if not os.path.exists(os.path.join(webrtc_source_dir, 'src')):
         with cd(webrtc_source_dir):
             cmd(['gclient'])
