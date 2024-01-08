@@ -100,6 +100,8 @@ def add_path(path: str, is_after=False):
     else:
         os.environ['PATH'] = path + PATH_SEPARATOR + os.environ['PATH']
 
+    logging.debug(f'os.environ path : {os.environ["PATH"]}')
+
 
 def download(url: str, output_dir: Optional[str] = None, filename: Optional[str] = None) -> str:
     if filename is None:
@@ -1135,7 +1137,8 @@ def main():
             commit = version_info.webrtc_commit
             if args.commit:
                 commit = args.commit
-            
+
+            print("get_depot_tools dir: ", dir)
             print("Building for commit: ", commit)
 
             # ソース取得
