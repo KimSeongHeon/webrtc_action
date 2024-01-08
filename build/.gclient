@@ -1,7 +1,7 @@
 solutions = [
   {
     "name": "src",
-    "url": "https://github.com/webrtc-sdk/webrtc.git",
+    "url": "https://webrtc.googlesource.com/src.git",
     "deps_file": "DEPS",
     "managed": False,
     "custom_deps": {},
