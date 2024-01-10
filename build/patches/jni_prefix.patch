@@ -7,7 +7,7 @@ index 0b55496619..4fedd79167 100644
         reinterpret_cast<void*>(&webrtc::AudioManager::CacheAudioParameters)}};
    j_native_registration_ = j_environment_->RegisterNatives(
 -      "org/webrtc/voiceengine/WebRtcAudioManager", native_methods,
-+      "livekit/org/webrtc/voiceengine/WebRtcAudioManager", native_methods,
++      "navercloud/org/webrtc/voiceengine/WebRtcAudioManager", native_methods,
        arraysize(native_methods));
    j_audio_manager_.reset(
        new JavaAudioManager(j_native_registration_.get(),
@@ -20,7 +20,7 @@ index 919eabb983..012891ca14 100644
         reinterpret_cast<void*>(&webrtc::AudioRecordJni::DataIsRecorded)}};
    j_native_registration_ = j_environment_->RegisterNatives(
 -      "org/webrtc/voiceengine/WebRtcAudioRecord", native_methods,
-+      "livekit/org/webrtc/voiceengine/WebRtcAudioRecord", native_methods,
++      "navercloud/org/webrtc/voiceengine/WebRtcAudioRecord", native_methods,
        arraysize(native_methods));
    j_audio_record_.reset(
        new JavaAudioRecord(j_native_registration_.get(),
@@ -33,7 +33,7 @@ index 5afa1ec252..5a3b1396c9 100644
         reinterpret_cast<void*>(&webrtc::AudioTrackJni::GetPlayoutData)}};
    j_native_registration_ = j_environment_->RegisterNatives(
 -      "org/webrtc/voiceengine/WebRtcAudioTrack", native_methods,
-+      "livekit/org/webrtc/voiceengine/WebRtcAudioTrack", native_methods,
++      "navercloud/org/webrtc/voiceengine/WebRtcAudioTrack", native_methods,
        arraysize(native_methods));
    j_audio_track_.reset(
        new JavaAudioTrack(j_native_registration_.get(),
@@ -46,7 +46,7 @@ index 916be8244e..f5164f1470 100644
      : j_environment_(JVM::GetInstance()->environment()),
        j_build_info_(
 -          JVM::GetInstance()->GetClass("org/webrtc/voiceengine/BuildInfo")) {}
-+          JVM::GetInstance()->GetClass("livekit/org/webrtc/voiceengine/BuildInfo")) {}
++          JVM::GetInstance()->GetClass("navercloud/org/webrtc/voiceengine/BuildInfo")) {}
  
  std::string BuildInfo::GetStringFromJava(const char* name) {
    jmethodID id = j_build_info_.GetStaticMethodId(name, "()Ljava/lang/String;");
@@ -62,10 +62,10 @@ index ee9930bcaa..5c9e14b45c 100644
 -    {"org/webrtc/voiceengine/WebRtcAudioManager", nullptr},
 -    {"org/webrtc/voiceengine/WebRtcAudioRecord", nullptr},
 -    {"org/webrtc/voiceengine/WebRtcAudioTrack", nullptr},
-+    {"livekit/org/webrtc/voiceengine/BuildInfo", nullptr},
-+    {"livekit/org/webrtc/voiceengine/WebRtcAudioManager", nullptr},
-+    {"livekit/org/webrtc/voiceengine/WebRtcAudioRecord", nullptr},
-+    {"livekit/org/webrtc/voiceengine/WebRtcAudioTrack", nullptr},
++    {"navercloud/org/webrtc/voiceengine/BuildInfo", nullptr},
++    {"navercloud/org/webrtc/voiceengine/WebRtcAudioManager", nullptr},
++    {"navercloud/org/webrtc/voiceengine/WebRtcAudioRecord", nullptr},
++    {"navercloud/org/webrtc/voiceengine/WebRtcAudioTrack", nullptr},
  };
  
  // Android's FindClass() is trickier than usual because the app-specific
@@ -78,10 +78,10 @@ index d1be684cbb..812c3eb5dc 100644
    JNIEnv* env = AttachCurrentThreadIfNeeded();
    ScopedJavaLocalRef<jclass> factory_class =
 -      GetClass(env, "org/webrtc/HardwareVideoEncoderFactory");
-+      GetClass(env, "livekit/org/webrtc/HardwareVideoEncoderFactory");
++      GetClass(env, "navercloud/org/webrtc/HardwareVideoEncoderFactory");
    jmethodID factory_constructor = env->GetMethodID(
 -      factory_class.obj(), "<init>", "(Lorg/webrtc/EglBase$Context;ZZ)V");
-+      factory_class.obj(), "<init>", "(Llivekit/org/webrtc/EglBase$Context;ZZ)V");
++      factory_class.obj(), "<init>", "(Lnavercloud/org/webrtc/EglBase$Context;ZZ)V");
    ScopedJavaLocalRef<jobject> factory_object(
        env, env->NewObject(factory_class.obj(), factory_constructor,
                            nullptr /* shared_context */,
@@ -90,10 +90,10 @@ index d1be684cbb..812c3eb5dc 100644
    JNIEnv* env = AttachCurrentThreadIfNeeded();
    ScopedJavaLocalRef<jclass> factory_class =
 -      GetClass(env, "org/webrtc/HardwareVideoDecoderFactory");
-+      GetClass(env, "livekit/org/webrtc/HardwareVideoDecoderFactory");
++      GetClass(env, "navercloud/org/webrtc/HardwareVideoDecoderFactory");
    jmethodID factory_constructor = env->GetMethodID(
 -      factory_class.obj(), "<init>", "(Lorg/webrtc/EglBase$Context;)V");
-+      factory_class.obj(), "<init>", "(Llivekit/org/webrtc/EglBase$Context;)V");
++      factory_class.obj(), "<init>", "(Lnavercloud/org/webrtc/EglBase$Context;)V");
    ScopedJavaLocalRef<jobject> factory_object(
        env, env->NewObject(factory_class.obj(), factory_constructor,
                            nullptr /* shared_context */));
@@ -248,11 +248,11 @@ index 4e5781027a..5d17a87c50 100644
  #define JNI_FUNCTION_DECLARATION(rettype, name, ...)                    \
    __attribute__((force_align_arg_pointer)) extern "C" JNIEXPORT rettype \
 -      JNICALL Java_org_webrtc_##name(__VA_ARGS__)
-+      JNICALL Java_livekit_org_webrtc_##name(__VA_ARGS__)
++      JNICALL Java_navercloud_org_webrtc_##name(__VA_ARGS__)
  #else
  #define JNI_FUNCTION_DECLARATION(rettype, name, ...) \
 -  extern "C" JNIEXPORT rettype JNICALL Java_org_webrtc_##name(__VA_ARGS__)
-+  extern "C" JNIEXPORT rettype JNICALL Java_livekit_org_webrtc_##name(__VA_ARGS__)
++  extern "C" JNIEXPORT rettype JNICALL Java_navercloud_org_webrtc_##name(__VA_ARGS__)
  #endif
  
  namespace webrtc {
@@ -298,7 +298,7 @@ index 5e4a5d3c81..c9cb039432 100644
    rtc_strict_field_trials = ""
 +
 +  if (is_android) {
-+    android_package_prefix = "livekit"
++    android_package_prefix = "navercloud"
 +  }
 +
  }
@@ -331,7 +331,7 @@ index b739c86d1..028932256 100755
 +        print("import: %s" % qualified_name)
 +
 +        if qualified_name.startswith('Lorg/webrtc'):
-+          return prefix + qualified_name.replace('Lorg/webrtc', 'Llivekit/org/webrtc', 1) + ';'
++          return prefix + qualified_name.replace('Lorg/webrtc', 'Lnavercloud/org/webrtc', 1) + ';'
          return prefix + qualified_name + ';'
  
      # Is it an inner class from an outer class import? (e.g. referencing
@@ -341,7 +341,7 @@ index b739c86d1..028932256 100755
          if qualified_name.endswith('/' + outer):
 +          print("outer import: %s" % qualified_name)
 +          if qualified_name.startswith('Lorg/webrtc'):
-+            return (prefix + qualified_name.replace('Lorg/webrtc', 'Llivekit/org/webrtc', 1) + '$' + inner + ';')
++            return (prefix + qualified_name.replace('Lorg/webrtc', 'Lnavercloud/org/webrtc', 1) + '$' + inner + ';')
            return (prefix + qualified_name + '$' + inner + ';')
        raise SyntaxError('Inner class (%s) can not be '
                          'used directly by JNI. Please import the outer '
