@@ -96,6 +96,7 @@ jobs:
           - android
           - android_prefixed
     runs-on: self-hosted
+    timeout-minutes: 900
     steps:
     - uses: actions/checkout@v2
     - name: Disk Cleanup
@@ -163,7 +164,7 @@ jobs:
     if: contains(github.ref, 'tags/m')
     needs:
       - create-release
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
