@@ -1,76 +1,5 @@
-diff --git a/modules/audio_device/android/audio_manager.cc b/modules/audio_device/android/audio_manager.cc
-index 0b55496619..4fedd79167 100644
---- a/modules/audio_device/android/audio_manager.cc
-+++ b/modules/audio_device/android/audio_manager.cc
-@@ -74,7 +74,7 @@ AudioManager::AudioManager()
-       {"nativeCacheAudioParameters", "(IIIZZZZZZZIIJ)V",
-        reinterpret_cast<void*>(&webrtc::AudioManager::CacheAudioParameters)}};
-   j_native_registration_ = j_environment_->RegisterNatives(
--      "org/webrtc/voiceengine/WebRtcAudioManager", native_methods,
-+      "navercloud/org/webrtc/voiceengine/WebRtcAudioManager", native_methods,
-       arraysize(native_methods));
-   j_audio_manager_.reset(
-       new JavaAudioManager(j_native_registration_.get(),
-diff --git a/modules/audio_device/android/audio_record_jni.cc b/modules/audio_device/android/audio_record_jni.cc
-index 919eabb983..012891ca14 100644
---- a/modules/audio_device/android/audio_record_jni.cc
-+++ b/modules/audio_device/android/audio_record_jni.cc
-@@ -102,7 +102,7 @@ AudioRecordJni::AudioRecordJni(AudioManager* audio_manager)
-       {"nativeDataIsRecorded", "(IJ)V",
-        reinterpret_cast<void*>(&webrtc::AudioRecordJni::DataIsRecorded)}};
-   j_native_registration_ = j_environment_->RegisterNatives(
--      "org/webrtc/voiceengine/WebRtcAudioRecord", native_methods,
-+      "navercloud/org/webrtc/voiceengine/WebRtcAudioRecord", native_methods,
-       arraysize(native_methods));
-   j_audio_record_.reset(
-       new JavaAudioRecord(j_native_registration_.get(),
-diff --git a/modules/audio_device/android/audio_track_jni.cc b/modules/audio_device/android/audio_track_jni.cc
-index 5afa1ec252..5a3b1396c9 100644
---- a/modules/audio_device/android/audio_track_jni.cc
-+++ b/modules/audio_device/android/audio_track_jni.cc
-@@ -112,7 +112,7 @@ AudioTrackJni::AudioTrackJni(AudioManager* audio_manager)
-       {"nativeGetPlayoutData", "(IJ)V",
-        reinterpret_cast<void*>(&webrtc::AudioTrackJni::GetPlayoutData)}};
-   j_native_registration_ = j_environment_->RegisterNatives(
--      "org/webrtc/voiceengine/WebRtcAudioTrack", native_methods,
-+      "navercloud/org/webrtc/voiceengine/WebRtcAudioTrack", native_methods,
-       arraysize(native_methods));
-   j_audio_track_.reset(
-       new JavaAudioTrack(j_native_registration_.get(),
-diff --git a/modules/audio_device/android/build_info.cc b/modules/audio_device/android/build_info.cc
-index 916be8244e..f5164f1470 100644
---- a/modules/audio_device/android/build_info.cc
-+++ b/modules/audio_device/android/build_info.cc
-@@ -17,7 +17,7 @@ namespace webrtc {
- BuildInfo::BuildInfo()
-     : j_environment_(JVM::GetInstance()->environment()),
-       j_build_info_(
--          JVM::GetInstance()->GetClass("org/webrtc/voiceengine/BuildInfo")) {}
-+          JVM::GetInstance()->GetClass("navercloud/org/webrtc/voiceengine/BuildInfo")) {}
- 
- std::string BuildInfo::GetStringFromJava(const char* name) {
-   jmethodID id = j_build_info_.GetStaticMethodId(name, "()Ljava/lang/String;");
-diff --git a/modules/utility/source/jvm_android.cc b/modules/utility/source/jvm_android.cc
-index ee9930bcaa..5c9e14b45c 100644
---- a/modules/utility/source/jvm_android.cc
-+++ b/modules/utility/source/jvm_android.cc
-@@ -27,10 +27,10 @@ struct {
-   const char* name;
-   jclass clazz;
- } loaded_classes[] = {
--    {"org/webrtc/voiceengine/BuildInfo", nullptr},
--    {"org/webrtc/voiceengine/WebRtcAudioManager", nullptr},
--    {"org/webrtc/voiceengine/WebRtcAudioRecord", nullptr},
--    {"org/webrtc/voiceengine/WebRtcAudioTrack", nullptr},
-+    {"navercloud/org/webrtc/voiceengine/BuildInfo", nullptr},
-+    {"navercloud/org/webrtc/voiceengine/WebRtcAudioManager", nullptr},
-+    {"navercloud/org/webrtc/voiceengine/WebRtcAudioRecord", nullptr},
-+    {"navercloud/org/webrtc/voiceengine/WebRtcAudioTrack", nullptr},
- };
- 
- // Android's FindClass() is trickier than usual because the app-specific
 diff --git a/modules/video_coding/codecs/test/android_codec_factory_helper.cc b/modules/video_coding/codecs/test/android_codec_factory_helper.cc
-index d1be684cbb..812c3eb5dc 100644
+index d1be684cbb..268f1da723 100644
 --- a/modules/video_coding/codecs/test/android_codec_factory_helper.cc
 +++ b/modules/video_coding/codecs/test/android_codec_factory_helper.cc
 @@ -51,9 +51,9 @@ void InitializeAndroidObjects() {
@@ -98,10 +27,10 @@ index d1be684cbb..812c3eb5dc 100644
        env, env->NewObject(factory_class.obj(), factory_constructor,
                            nullptr /* shared_context */));
 diff --git a/sdk/android/BUILD.gn b/sdk/android/BUILD.gn
-index 494b43f6d3..1a63c66558 100644
+index 9aae8b9aa5..beadb292b1 100644
 --- a/sdk/android/BUILD.gn
 +++ b/sdk/android/BUILD.gn
-@@ -1308,6 +1308,7 @@ if (current_os == "linux" || is_android) {
+@@ -1283,6 +1283,7 @@ if (current_os == "linux" || is_android) {
      sources = [ "api/org/webrtc/Metrics.java" ]
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -109,7 +38,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    # Generated JNI for public JNI targets, matching order of targets
-@@ -1322,6 +1323,7 @@ if (current_os == "linux" || is_android) {
+@@ -1297,6 +1298,7 @@ if (current_os == "linux" || is_android) {
      ]
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -117,7 +46,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_video_jni") {
-@@ -1352,12 +1354,14 @@ if (current_os == "linux" || is_android) {
+@@ -1327,12 +1329,14 @@ if (current_os == "linux" || is_android) {
      ]
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -132,7 +61,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_libvpx_vp8_jni") {
-@@ -1368,6 +1372,7 @@ if (current_os == "linux" || is_android) {
+@@ -1343,6 +1347,7 @@ if (current_os == "linux" || is_android) {
  
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -140,7 +69,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_libvpx_vp9_jni") {
-@@ -1378,6 +1383,7 @@ if (current_os == "linux" || is_android) {
+@@ -1353,6 +1358,7 @@ if (current_os == "linux" || is_android) {
  
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -148,7 +77,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_libaom_av1_encoder_jni") {
-@@ -1385,6 +1391,7 @@ if (current_os == "linux" || is_android) {
+@@ -1360,6 +1366,7 @@ if (current_os == "linux" || is_android) {
  
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -156,7 +85,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_dav1d_jni") {
-@@ -1392,6 +1399,7 @@ if (current_os == "linux" || is_android) {
+@@ -1367,6 +1374,7 @@ if (current_os == "linux" || is_android) {
  
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -164,7 +93,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_swcodecs_jni") {
-@@ -1402,6 +1410,7 @@ if (current_os == "linux" || is_android) {
+@@ -1377,6 +1385,7 @@ if (current_os == "linux" || is_android) {
  
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -172,7 +101,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_peerconnection_jni") {
-@@ -1443,12 +1452,14 @@ if (current_os == "linux" || is_android) {
+@@ -1414,12 +1423,14 @@ if (current_os == "linux" || is_android) {
      ]
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -187,7 +116,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_builtin_audio_codecs_jni") {
-@@ -1458,6 +1469,7 @@ if (current_os == "linux" || is_android) {
+@@ -1429,6 +1440,7 @@ if (current_os == "linux" || is_android) {
      ]
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -195,7 +124,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    # Generated JNI for native API targets
-@@ -1469,6 +1481,7 @@ if (current_os == "linux" || is_android) {
+@@ -1441,6 +1453,7 @@ if (current_os == "linux" || is_android) {
      ]
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -203,7 +132,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    # Generated JNI for internal targets.
-@@ -1476,12 +1489,14 @@ if (current_os == "linux" || is_android) {
+@@ -1448,12 +1461,14 @@ if (current_os == "linux" || is_android) {
    generate_jni("generated_logging_jni") {
      sources = [ "src/java/org/webrtc/JNILogging.java" ]
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -218,7 +147,7 @@ index 494b43f6d3..1a63c66558 100644
    }
  
    generate_jni("generated_java_audio_device_module_native_jni") {
-@@ -1491,6 +1506,7 @@ if (current_os == "linux" || is_android) {
+@@ -1463,6 +1478,7 @@ if (current_os == "linux" || is_android) {
      ]
      namespace = "webrtc::jni"
      jni_generator_include = "//sdk/android/src/jni/jni_generator_helper.h"
@@ -227,10 +156,10 @@ index 494b43f6d3..1a63c66558 100644
  }
  
 diff --git a/sdk/android/api/org/webrtc/PeerConnectionFactory.java b/sdk/android/api/org/webrtc/PeerConnectionFactory.java
-index 1817d41beb..1c7bfbf480 100644
+index c46718fdd6..9def4680dc 100644
 --- a/sdk/android/api/org/webrtc/PeerConnectionFactory.java
 +++ b/sdk/android/api/org/webrtc/PeerConnectionFactory.java
-@@ -89,7 +89,7 @@ public class PeerConnectionFactory {
+@@ -90,7 +90,7 @@ public class PeerConnectionFactory {
        private String fieldTrials = "";
        private boolean enableInternalTracer;
        private NativeLibraryLoader nativeLibraryLoader = new NativeLibrary.DefaultLoader();
@@ -240,7 +169,7 @@ index 1817d41beb..1c7bfbf480 100644
        @Nullable private Severity loggableSeverity;
  
 diff --git a/sdk/android/src/jni/jni_helpers.h b/sdk/android/src/jni/jni_helpers.h
-index 4e5781027a..5d17a87c50 100644
+index 4e5781027a..438087227a 100644
 --- a/sdk/android/src/jni/jni_helpers.h
 +++ b/sdk/android/src/jni/jni_helpers.h
 @@ -30,10 +30,10 @@
@@ -270,21 +199,20 @@ index d910b39a7c..d0e970cfaa 100755
    if not ext_build_dir:
      shutil.rmtree(build_dir, True)
 diff --git a/webrtc.gni b/webrtc.gni
-index 5e4a5d3c81..c9cb039432 100644
+index 5a1c43c888..24fcbf0bf5 100644
 --- a/webrtc.gni
 +++ b/webrtc.gni
-@@ -240,6 +240,11 @@ declare_args() {
-   #  "warn": RTC_LOGs a message with LS_WARNING severity if the field trial
+@@ -247,6 +247,10 @@ declare_args() {
    #          hasn't been registered.
    rtc_strict_field_trials = ""
-+
+ 
 +  if (is_android) {
 +    android_package_prefix = "navercloud"
 +  }
 +
- }
- 
- if (!build_with_mozilla) {
+   # If different from "", symbols exported with RTC_OBJC_EXPORT will be prefixed
+   # with this string.
+   # See the definition of RTC_OBJC_TYPE_PREFIX in the code.
 diff --git a/base/android/jni_generator/jni_generator.py b/base/android/jni_generator/jni_generator.py
 index b739c86d1..028932256 100755
 --- a/base/android/jni_generator/jni_generator.py
