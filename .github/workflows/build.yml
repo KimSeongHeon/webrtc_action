@@ -102,6 +102,7 @@ jobs:
     - name: Disk Cleanup
       run: |
         df -h
+        docker system prune -f
         docker container prune -f
         docker image prune -a -f
         # 3.9GB
